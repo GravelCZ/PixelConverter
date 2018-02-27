@@ -138,18 +138,27 @@ public class Main {
 		int pixels = textBytes.length;
 		System.out.println("Total binary values: " + pixels);
 		System.out.println("Calculating ratio.");
-		int heightInPixels = (int) Math.sqrt(pixels);
-		int widthInPixels = (int) Math.sqrt(pixels);
+		double squareRoot = Math.sqrt(pixels);
+		int size = 0;
+		if (squareRoot != (int) squareRoot) {
+			squareRoot = squareRoot + 1;
+			squareRoot = Math.floor(squareRoot);
+		}
 		
-		System.out.println("Done, final image will be " + heightInPixels + " by " + widthInPixels);
+		size = (int) squareRoot;
+		
+		System.out.println("Done, final image will be " + size + " by " + size);
 		
 		System.out.println("Starting to convert binary file to image.");
 		long convertStart = System.currentTimeMillis();
-		BufferedImage img = new BufferedImage(widthInPixels, heightInPixels, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage img = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
 		int nextPixel = 0;
 		int charAt = 0;
 		for (int h = 0; h < img.getHeight(); h++) {
 			for (int w = 0; w < img.getWidth(); w++) {
+				if (charAt >= binArray.length) {
+					continue;
+				}
 				if (binArray[charAt] == '0') {
 					nextPixel = -16777216;
 				} else if (binArray[charAt] == '1') {
