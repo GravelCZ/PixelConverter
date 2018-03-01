@@ -18,6 +18,13 @@ public class Main {
 		}
 		System.out.println("Starting...");
 		System.out.println("PixelConverter by GravelCZLP.");
+		// Does this make sense to you ? 
+		if (args.length < 1) {
+			System.out.println("Arguments:");
+			System.out.println("pngtobin - converts .png (white and black only) file to binary text");
+			System.out.println("bintopng - converts .txt file to .png fine (white and black only)");
+			return;
+		}
 		if (args[0].equalsIgnoreCase("pngtobin")) {
 			pngtobinary();
 		} else if (args[0].equalsIgnoreCase("bintopng")) {
