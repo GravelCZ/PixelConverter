@@ -1,4 +1,4 @@
-package cz.GravelCZLP.PixelDecoder;
+package cz.GravelCZLP.PixelConverter;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
@@ -17,6 +17,7 @@ public class Main {
 			f.mkdir();
 		}
 		System.out.println("Starting...");
+		System.out.println("PixelConverter by GravelCZLP.");
 		if (args[0].equalsIgnoreCase("pngtobin")) {
 			pngtobinary();
 		} else if (args[0].equalsIgnoreCase("bintopng")) {
@@ -49,7 +50,7 @@ public class Main {
 		System.out.println("Width: " + img.getWidth());
 		System.out.println("Height: " + img.getHeight());
 		
-		System.out.println("Converting image to 2 dim int array");
+		System.out.println("Converting image to 2D int array");
 		long start = System.currentTimeMillis();
 		
 		for (int h = 0; h < img.getHeight(); h++) {
@@ -80,9 +81,9 @@ public class Main {
 				}
 			}
 		}
+		
 		long end1 = System.currentTimeMillis();
 		System.out.println("Done. Process took: " + (end1 - start1) + " ms.");
-		System.out.println("Output: " + binary.toString());
 		System.out.println("Writing output to file (out.txt)");
 		File out = new File("./out.txt");
 		if (!out.exists()) {
@@ -99,7 +100,7 @@ public class Main {
 			bw = new BufferedWriter(new FileWriter(out));
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.out.println("Failed to: " + e.getMessage());
+			System.out.println("Failed to create Buffered Reader: " + e.getMessage());
 			System.exit(4);
 		}
 		try {
@@ -137,7 +138,7 @@ public class Main {
 		
 		int pixels = textBytes.length;
 		System.out.println("Total binary values: " + pixels);
-		System.out.println("Calculating ratio.");
+		System.out.println("Calculating size of image.");
 		double squareRoot = Math.sqrt(pixels);
 		int size = 0;
 		if (squareRoot != (int) squareRoot) {
@@ -146,6 +147,17 @@ public class Main {
 		}
 		
 		size = (int) squareRoot;
+		
+		int squareOfSize = size * size;
+		int toFill = squareOfSize - pixels;
+		
+		System.out.println("Need to add " + toFill + " bits");
+		
+		if (toFill == 0) {
+			for (int i = 0; i < toFill; i++) {
+				binary.append("0");
+			}	
+		}
 		
 		System.out.println("Done, final image will be " + size + " by " + size);
 		
